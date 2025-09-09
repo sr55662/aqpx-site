@@ -1,0 +1,4 @@
+﻿User-agent: *
+Allow: /
+
+Sitemap: https://sr55662.github.io/aqpx-site/sitemap.xml
