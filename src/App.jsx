@@ -1,7 +1,7 @@
 ﻿import { useEffect } from "react";
 
 const Section = ({ id, title, kicker, children }) => (
-  <section id={id} className="section">
+  <section id={id} className="section reveal">
     <div className="container">
       {kicker && <p className="kicker">{kicker}</p>}
       <h2 className="h2">{title}</h2>
@@ -11,37 +11,23 @@ const Section = ({ id, title, kicker, children }) => (
 );
 
 const Pill = ({ children }) => <span className="pill">{children}</span>;
-
 const Divider = () => <div className="divider" />;
 
 const HeroDiagram = () => (
   <svg viewBox="0 0 900 340" className="diagram">
-    <defs>
-      <linearGradient id="g1" x1="0" x2="1">
-        <stop offset="0%" stopOpacity="0.25" />
-        <stop offset="100%" stopOpacity="0.6" />
-      </linearGradient>
-    </defs>
-    {/* USER PLANE */}
     <rect x="30" y="20" width="840" height="80" rx="14" className="node" />
     <text x="50" y="55" className="label">USER PLANE</text>
     <text x="50" y="78" className="sub">Web Console • CLI • API Gateway</text>
-
-    {/* CONTROL PLANE */}
     <rect x="30" y="120" width="840" height="100" rx="14" className="node" />
     <text x="50" y="155" className="label">CONTROL PLANE</text>
     <text x="50" y="178" className="sub">Policy Gateway • Orchestrator • Consensus • LLM Proxy • Capability Registry • Federation</text>
-
-    {/* DATA PLANE */}
     <rect x="30" y="240" width="840" height="80" rx="14" className="node" />
     <text x="50" y="275" className="label">DATA PLANE</text>
     <text x="50" y="298" className="sub">Data Digestor • Evidence Vault • Secure Storage</text>
-
-    {/* flows */}
     <path d="M450,102 L450,120" className="flow" />
     <path d="M450,220 L450,240" className="flow" />
-    <text x="460" y="115" className="flowtext">requests + auth</text>
-    <text x="460" y="235" className="flowtext">digests only</text>
+    <text x="460" y="115" className="sub">requests + auth</text>
+    <text x="460" y="235" className="sub">digests only</text>
   </svg>
 );
 
@@ -54,15 +40,12 @@ const L0L3 = () => (
     <text x="150" y="60" className="label">L0</text>
     <text x="150" y="85" className="sub">Metadata</text>
     <text x="150" y="110" className="sub">Schema • Counts</text>
-
     <text x="330" y="60" className="label">L1</text>
     <text x="330" y="85" className="sub">Statistical</text>
     <text x="330" y="110" className="sub">DP • k-Anon</text>
-
     <text x="510" y="60" className="label">L2</text>
     <text x="510" y="85" className="sub">Contextual</text>
     <text x="510" y="110" className="sub">Features • PCA</text>
-
     <text x="690" y="60" className="label">L3</text>
     <text x="690" y="85" className="sub">Content</text>
     <text x="690" y="110" className="sub">Redacted • PII-safe</text>
@@ -105,36 +88,52 @@ const AuditRibbon = () => (
   </svg>
 );
 
-const Workflows = () => (
-  <div className="workflows">
-    {[
-      {name:"Sarah — Quant Analyst", steps:["NL request","Digest orchestration","Consensus risk analysis","Audit-ready report"]},
-      {name:"Alex — ML Eng. Manager", steps:["Template selection","L2 features","Federated training","Validation + evidence"]},
-      {name:"Jennifer — Compliance", steps:["Scope policy","Auto evidence pack","Controls check","1-click report"]},
-    ].map((wf,i)=>(
-      <div className="wf" key={i}>
-        <h4 className="h4">{wf.name}</h4>
-        <div className="lane">
-          {wf.steps.map((s,j)=>(
-            <div className="chip" key={j}>{s}</div>
-          ))}
-        </div>
-      </div>
-    ))}
+const Marquee = () => (
+  <div className="marquee">
+    <div className="track">
+      {Array(2).fill(0).map((_,i)=>(
+        <span key={i}>
+          Built for regulated teams • Zero-Trust • DP/k-Anon • OPA • SSO/RBAC • Evidence Vault • Federated Orchestration • Plan DSL • Compute-to-Data • Bias Checks & Consensus •
+          &nbsp;&nbsp;&nbsp;&nbsp;
+        </span>
+      ))}
+    </div>
   </div>
 );
 
-export default function App() {
+function useScrollReveal() {
   useEffect(() => {
-    // smooth scroll for in-page nav
-    document.querySelectorAll('a[href^="#"]').forEach(a=>{
-      a.addEventListener("click", e=>{
-        const id = a.getAttribute("href");
-        const el = document.querySelector(id);
-        if (el) { e.preventDefault(); el.scrollIntoView({behavior:"smooth"}); }
-      });
+    const els = Array.from(document.querySelectorAll(".reveal"));
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add("on"); });
+    }, { threshold: 0.15 });
+    els.forEach(el => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+}
+
+function useCounters() {
+  useEffect(() => {
+    const animate = (el, to, dur=900) => {
+      const start = performance.now(); const from = 0;
+      const step = t => {
+        const p = Math.min(1, (t - start)/dur);
+        const v = Math.floor(from + (to - from)*p);
+        el.textContent = v.toString();
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    };
+    document.querySelectorAll("[data-count]").forEach(el=>{
+      const target = parseInt(el.getAttribute("data-count") || "0", 10);
+      animate(el, target, 1000);
     });
   }, []);
+}
+
+export default function App() {
+  useScrollReveal();
+  useCounters();
 
   return (
     <div>
@@ -157,12 +156,12 @@ export default function App() {
 
       {/* Hero */}
       <main id="home" className="hero">
-        <div className="container heroinner">
+        <div className="container heroinner reveal">
           <div className="herotext">
             <p className="kicker">Enterprise AI, without data egress</p>
             <h1 className="h1">Compute-to-Data Orchestration with Mathematical Privacy</h1>
             <p className="lede">
-              Natural language in → privacy-bounded digests out. Policy-aware orchestration, 
+              Natural language in → privacy-bounded digests out. Policy-aware orchestration,
               multi-LLM consensus, cryptographic evidence.
             </p>
             <div className="pills">
@@ -176,71 +175,82 @@ export default function App() {
         </div>
       </main>
 
+      <Marquee />
+
       <Divider/>
 
       <Section id="architecture" kicker="Three-Plane IOC" title="Architecture at a Glance">
-        <p>
-          Strict separation of User, Control, and Data planes; LLMs never touch raw data—only digests traverse boundaries.
-        </p>
+        <p>Strict separation of User, Control, and Data planes; LLMs never touch raw data—only digests traverse boundaries.</p>
       </Section>
 
       <Section id="privacy" kicker="L0–L3 Digests" title="Privacy-Preserving Data Digestor">
         <L0L3 />
-        <p>
-          L0 metadata → L1 statistical (DP/k-Anon) → L2 contextual features → L3 redacted samples. Privacy budget and proofs wrap every step.
-        </p>
+        <p>L0 metadata → L1 statistical (DP/k-Anon) → L2 contextual features → L3 redacted samples. Privacy budget and proofs wrap every step.</p>
       </Section>
 
       <Section id="consensus" kicker="Multi-LLM" title="Consensus Engine with Uncertainty">
         <ConsensusFlow />
-        <p>
-          Independent generation → cross-validation → structured consensus → final decision with Bayesian confidence and conservative fallbacks.
-        </p>
+        <p>Independent generation → cross-validation → structured consensus → final decision with Bayesian confidence and conservative fallbacks.</p>
       </Section>
 
       <Section id="federation" kicker="Cross-Org" title="Federated Orchestration">
         <Federation />
-        <p>
-          FO ↔ LO policy composition, signed plans, and stitched evidence enable collaboration across divisions and partners—without data sharing.
-        </p>
+        <p>FO ↔ LO policy composition, signed plans, and stitched evidence enable collaboration across divisions and partners—without data sharing.</p>
       </Section>
 
       <Section id="evidence" kicker="Lineage & Proofs" title="Evidence Vault">
         <AuditRibbon />
-        <p>
-          Immutable, cryptographically verifiable trails (Merkle trees, signatures) for every action, plan, and output.
-        </p>
+        <p>Immutable, cryptographically verifiable trails (Merkle trees, signatures) for every action, plan, and output.</p>
       </Section>
 
       <Section id="benchmarks" kicker="Targets" title="Benchmarks & Readiness">
+        <div className="container" style={{display:"grid",gridTemplateColumns:"repeat(4,minmax(0,1fr))",gap:"12px"}}>
+          <div><div className="counter" data-count="10"></div><small>p95 mins (complex query)</small></div>
+          <div><div className="counter" data-count="1000"></div><small>concurrent users</small></div>
+          <div><div className="counter" data-count="99"></div><small>.9% availability</small></div>
+          <div><div className="counter" data-count="100"></div><small>% evidence integrity</small></div>
+        </div>
         <ul className="bullets">
-          <li>Complex query p95 &lt; 10m; 1000+ concurrent users</li>
-          <li>System availability 99.9% with comprehensive monitoring</li>
-          <li>Zero PII egress; DP/k-Anon verification; evidence integrity 100%</li>
+          <li>Representative targets; methodology available under NDA</li>
+          <li>Evidence-first validation and cost transparency</li>
+          <li>No raw data movement required</li>
         </ul>
       </Section>
 
       <Section id="stories" kicker="Impact" title="User Stories">
-        <Workflows />
-        <p className="tiny">
-          Examples reflect documented transformations in finance, healthcare, and compliance programs.
-        </p>
+        <div className="workflows">
+          {[
+            {name:"Sarah — Quant Analyst", steps:["NL request","Digest orchestration","Consensus risk analysis","Audit-ready report"]},
+            {name:"Alex — ML Eng. Manager", steps:["Template selection","L2 features","Federated training","Validation + evidence"]},
+            {name:"Jennifer — Compliance", steps:["Scope policy","Auto evidence pack","Controls check","1-click report"]},
+          ].map((wf,i)=>(
+            <div className="wf" key={i}>
+              <h4 className="h4">{wf.name}</h4>
+              <div className="lane">
+                {wf.steps.map((s,j)=>(<div className="chip" key={j}>{s}</div>))}
+              </div>
+            </div>
+          ))}
+        </div>
+        <p className="tiny">Examples reflect transformations in finance, healthcare, and compliance programs.</p>
       </Section>
 
       <Divider/>
 
       <Section id="contact" kicker="Let’s talk" title="Contact">
-        <p>
-          Questions or pilot interest? <a href="mailto:sr55662@gmail.com">sr55662@gmail.com</a>
-        </p>
+        <p>Questions or pilot interest? <a href="mailto:sr55662@gmail.com">sr55662@gmail.com</a></p>
       </Section>
 
       <footer className="foot">
         <div className="container">
           <span>AQPX — Privacy-Preserving AI Orchestration</span>
-          <a href="#architecture">Architecture</a>
-          <a href="#privacy">Privacy</a>
-          <a href="#stories">User Stories</a>
+          <div>
+            <a href="#architecture">Architecture</a>
+            <span style={{margin:"0 6px"}}>•</span>
+            <a href="#privacy">Privacy</a>
+            <span style={{margin:"0 6px"}}>•</span>
+            <a href="#stories">User Stories</a>
+          </div>
         </div>
       </footer>
     </div>
