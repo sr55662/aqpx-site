@@ -4,21 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>AQPX — The Self-Learning Orchestration System for the Enterprise</title>
-    <meta name="description" content="AQPX is a self-learning orchestration system for the enterprise that preserves privacy with compute-to-data, policy-aware digests, and cryptographic evidence." />
+    <title>AQPX — Privacy-Preserving AI Orchestration for the Enterprise</title>
+    <meta name="description" content="AQPX compiles natural-language requests into policy-aware plans, executes compute-to-data, and returns auditable results with mathematical privacy." />
     <link rel="canonical" href="https://sr55662.github.io/aqpx-site/" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://sr55662.github.io/aqpx-site/" />
-    <meta property="og:title" content="AQPX — The Self-Learning Orchestration System for the Enterprise" />
-    <meta property="og:description" content="AQPX is a self-learning orchestration system for the enterprise that preserves privacy with compute-to-data, policy-aware digests, and cryptographic evidence." />
+    <meta property="og:title" content="AQPX — Privacy-Preserving AI Orchestration" />
+    <meta property="og:description" content="Deliver LLM-powered insights without exposing raw data. Compute-to-data, audit-ready evidence, and federated orchestration." />
     <meta property="og:image" content="https://sr55662.github.io/aqpx-site/og-image.png" />
 
     <!-- Twitter Cards -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="AQPX — The Self-Learning Orchestration System for the Enterprise" />
-    <meta name="twitter:description" content="AQPX is a self-learning orchestration system for the enterprise that preserves privacy with compute-to-data, policy-aware digests, and cryptographic evidence." />
+    <meta name="twitter:title" content="AQPX — Privacy-Preserving AI Orchestration" />
+    <meta name="twitter:description" content="Compute-to-data, privacy-bounded digests, and cryptographic evidence for enterprise AI." />
     <meta name="twitter:image" content="https://sr55662.github.io/aqpx-site/og-image.png" />
 
     <meta name="robots" content="index,follow" />
@@ -31,4 +31,3 @@
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
-
